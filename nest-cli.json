@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/finfrac-api/src",
+  "monorepo": true,
+  "root": "apps/finfrac-api",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/finfrac-api/tsconfig.app.json"
+  },
+  "projects": {
+    "finfrac-api": {
+      "type": "application",
+      "root": "apps/finfrac-api",
+      "entryFile": "main",
+      "sourceRoot": "apps/finfrac-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/finfrac-api/tsconfig.app.json"
+      }
+    },
+    "finfrac-worker": {
+      "type": "application",
+      "root": "apps/finfrac-worker",
+      "entryFile": "main",
+      "sourceRoot": "apps/finfrac-worker/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/finfrac-worker/tsconfig.app.json"
+      }
+    },
+    "core": {
+      "type": "library",
+      "root": "libs/core",
+      "entryFile": "index",
+      "sourceRoot": "libs/core/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/core/tsconfig.lib.json"
+      }
+    }
+  }
+}
