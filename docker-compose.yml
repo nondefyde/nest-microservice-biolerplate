@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  service:
+    container_name: service
+    env_file:
+      - _env/.env
+      - _env/service/.env.local
+    build:
+      context: "./"
+      dockerfile: docker/api/Dockerfile
+    ports:
+      - "4000:4000"
+  admin:
+    container_name: admin
+    env_file:
+      - _env/.env
+      - _env/admin/.env.local
+    build:
+      context: "./"
+      dockerfile: ./docker/admin/Dockerfile
+    ports:
+      - "4020:4020"
+  worker:
+    container_name: worker
+    env_file:
+      - _env/.env
+      - _env/worker/.env.local
+    build:
+      context: "./"
+      dockerfile: ./docker/worker/Dockerfile
+    ports:
+      - "4010:4010"

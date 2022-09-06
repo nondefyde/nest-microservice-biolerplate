@@ -1,0 +1,220 @@
+version: 2.1
+references:
+  main_only: &main_only
+    filters:
+      branches:
+        only: main
+  not_main_branch: &not_main_branch
+    filters:
+      branches:
+        ignore: main
+
+parameters:
+  # A parameter per package
+  run-service-workflow:
+    type: boolean
+    default: false
+
+  run-worker-workflow:
+    type: boolean
+    default: false
+
+  run-admin-workflow:
+    type: boolean
+    default: false
+
+  config-updated:
+    type: boolean
+    default: false
+
+  shared-lib-updated:
+    type: boolean
+    default: false
+
+  templates-updated:
+    type: boolean
+    default: false
+
+  kubernetes-updated:
+    type: boolean
+    default: false
+
+  ci-updated:
+    type: boolean
+    default: false
+
+orbs:
+  node: circleci/node@5.0.0
+  gke: circleci/gcp-gke@1.4.0
+  gcr: circleci/gcp-gcr@0.14.1
+
+executors:
+  node:
+    docker:
+      - image: circleci/node
+
+commands:
+  checkout_with_submodules:
+    steps:
+      - run:
+          name: Install local git and ssh client (in alpine only)
+          command: |
+            if which apk; then
+              apk add --no-cache git openssh-client
+            fi
+      - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
+
+  yarn_install:
+    steps:
+      - restore_cache:
+          name: Restore node_modules from cache
+          keys:
+            - v1-dependency-npm-{{ checksum "yarn.lock" }}
+            - v1-dependency-npm
+      - run: yarn --frozen-lockfile
+      - save_cache:
+          name: Save node_modules to cache
+          key: v1-dependency-npm-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+
+jobs:
+  unit-test:
+    executor: node
+    steps:
+      - checkout_with_submodules
+      - yarn_install
+      - run:
+          command: yarn test
+
+  build-dependencies:
+    executor: node
+    steps:
+      - checkout_with_submodules
+      - yarn_install
+      - run: yarn lint
+      - run: yarn build
+
+  # Service staging jobs for meta comics
+  deploy-service-stg:
+    description: Deploy Service Staging to GCP
+    machine: true
+    steps:
+      - gcr/gcr-auth
+      - gke/install
+      - gke/rollout-image:
+          cluster: cluster-dev
+          container: ksh-service
+          namespace: 'stg'
+          deployment: ksh-service-stg-dpl
+          image: gcr.io/$GOOGLE_PROJECT_ID/ksh-service
+          tag: $CIRCLE_SHA1
+
+  # Worker deployment jobs for meta comics
+  deploy-admin-stg:
+    description: Deploy Admin Staging to GCP
+    machine: true
+    steps:
+      - gcr/gcr-auth
+      - gke/install
+      - gke/rollout-image:
+          cluster: cluster-dev
+          container: ksh-admin
+          namespace: 'stg'
+          deployment: ksh-admin-stg-dpl
+          image: gcr.io/$GOOGLE_PROJECT_ID/ksh-admin
+          tag: $CIRCLE_SHA1
+
+  # Worker deployment jobs for meta comics
+  deploy-worker-stg:
+    description: Deploy Worker Staging to GCP
+    machine: true
+    steps:
+      - gcr/gcr-auth
+      - gke/install
+      - gke/rollout-image:
+          cluster: cluster-dev
+          container: ksh-worker
+          namespace: 'stg'
+          deployment: ksh-worker-stg-dpl
+          image: gcr.io/$GOOGLE_PROJECT_ID/ksh-worker
+          tag: $CIRCLE_SHA1
+
+workflows:
+  version: 2
+
+  deploy-service-stg-approve-prod:
+    when:
+      or:
+        - << pipeline.parameters.run-service-workflow >>
+        - << pipeline.parameters.config-updated >>
+        - << pipeline.parameters.shared-lib-updated >>
+        - << pipeline.parameters.templates-updated >>
+        - << pipeline.parameters.ci-updated >>
+    jobs:
+      - build-dependencies:
+          <<: *main_only
+      - gcr/build-and-push-image:
+          <<: *main_only
+          requires:
+            - build-dependencies
+          image: ksh-service
+          docker-context: ./
+          dockerfile: ./docker/service/Dockerfile
+          tag: $CIRCLE_SHA1
+      - deploy-service-stg:
+          requires:
+            - gcr/build-and-push-image
+
+  deploy-admin-stg-approve-prod:
+    when:
+      or:
+        - << pipeline.parameters.run-admin-workflow >>
+        - << pipeline.parameters.config-updated >>
+        - << pipeline.parameters.shared-lib-updated >>
+        - << pipeline.parameters.templates-updated >>
+        - << pipeline.parameters.ci-updated >>
+    jobs:
+      - build-dependencies:
+          <<: *main_only
+      - gcr/build-and-push-image:
+          <<: *main_only
+          requires:
+            - build-dependencies
+          image: ksh-admin
+          docker-context: ./
+          dockerfile: ./docker/admin/Dockerfile
+          tag: $CIRCLE_SHA1
+      - deploy-admin-stg:
+          requires:
+            - gcr/build-and-push-image
+
+  deploy-worker-stg-approve-prod:
+    when:
+      or:
+        - << pipeline.parameters.run-worker-workflow >>
+        - << pipeline.parameters.config-updated >>
+        - << pipeline.parameters.shared-lib-updated >>
+        - << pipeline.parameters.templates-updated >>
+        - << pipeline.parameters.ci-updated >>
+    jobs:
+      - build-dependencies:
+          <<: *main_only
+      - gcr/build-and-push-image:
+          <<: *main_only
+          requires:
+            - build-dependencies
+          image: ksh-worker
+          docker-context: ./
+          dockerfile: ./docker/worker/Dockerfile
+          tag: $CIRCLE_SHA1
+      - deploy-worker-stg:
+          requires:
+            - gcr/build-and-push-image
+
+  build-dependencies:
+    jobs:
+      - build-dependencies:
+          <<: *not_main_branch

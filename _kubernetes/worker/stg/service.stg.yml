@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ksh-worker-stg-srv
+  name: finfrac-worker-stg-srv
   namespace: stg
 spec:
   selector:
-    app: ksh-worker-stg-pod
+    app: finfrac-worker-stg-pod
   ports:
     - protocol: TCP
       port: 7000

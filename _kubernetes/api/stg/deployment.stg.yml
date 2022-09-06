@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ksh-service-stg-dpl
+  name: finfrac-api-stg-dpl
   namespace: stg
   labels:
     #Project ID
-    app: ksh-service
+    app: finfrac-api
 spec:
   #Run one instances of our application
   replicas: 1
   selector:
     matchLabels:
-      app: ksh-service-stg-pod
+      app: finfrac-api-stg-pod
   template:
     metadata:
       labels:
-        app: ksh-service-stg-pod
+        app: finfrac-api-stg-pod
     spec:
       #Container details
       securityContext:
         runAsNonRoot: false
         runAsUser: 0
       containers:
-        - name: ksh-service
-          image: gcr.io/bytegum/ksh-service:latest
+        - name: finfrac-api
+          image: gcr.io/bytegum/finfrac-api:latest
           imagePullPolicy: Always
           #Ports to expose
           ports:
@@ -31,15 +31,15 @@ spec:
               protocol: TCP
           envFrom:
             - secretRef:
-                name: ksh-app-stg
+                name: finfrac-app-stg
             - secretRef:
-                name: ksh-upload-stg
+                name: finfrac-upload-stg
           env:
             - name: DEFAULT_STORAGE
               value: gcs
 
           volumeMounts:
-            - name: gcs-service-account
+            - name: gcs-api-account
               mountPath: "/var/run/secret/cloud.google.com"
 
           readinessProbe:
@@ -56,6 +56,6 @@ spec:
             periodSeconds: 30
 
       volumes:
-        - name: gcs-service-account
+        - name: gcs-api-account
           secret:
-            secretName: ksh-gc-stg
+            secretName: finfrac-gc-stg

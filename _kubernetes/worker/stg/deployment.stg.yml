@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ksh-worker-stg-dpl
+  name: finfrac-worker-stg-dpl
   namespace: stg
   labels:
     #Project ID
-    app: ksh-worker
+    app: finfrac-worker
 spec:
   #Run one instances of our application
   replicas: 1
   selector:
     matchLabels:
-      app: ksh-worker-stg-pod
+      app: finfrac-worker-stg-pod
   template:
     metadata:
       labels:
-        app: ksh-worker-stg-pod
+        app: finfrac-worker-stg-pod
     spec:
       #Container details
       securityContext:
         runAsNonRoot: false
         runAsUser: 0
       containers:
-        - name: ksh-worker
-          image: gcr.io/bytegum/ksh-worker:latest
+        - name: finfrac-worker
+          image: gcr.io/bytegum/finfrac-worker:latest
           imagePullPolicy: Always
           #Ports to expose
           ports:
@@ -32,9 +32,9 @@ spec:
               protocol: TCP
           envFrom:
             - secretRef:
-                name: ksh-app-stg
+                name: finfrac-app-stg
             - secretRef:
-                name: ksh-upload-stg
+                name: finfrac-upload-stg
           env:
             - name: DEFAULT_STORAGE
               value: gcs
@@ -59,4 +59,4 @@ spec:
       volumes:
         - name: gcs-worker-account
           secret:
-            secretName: ksh-gc-stg
+            secretName: finfrac-gc-stg

@@ -1,0 +1,20 @@
+version: 2.1
+setup: true
+orbs:
+  path-filtering: circleci/path-filtering@0.1.2
+
+workflows:
+  setup:
+    jobs:
+      - path-filtering/filter:
+          base-revision: main
+          mapping: |
+            package.json config-updated true
+            config/.* config-updated true
+            libs/.* shared-lib-updated true
+            templates/.* templates-updated true
+            .circleci/.* ci-updated true
+            _kubernetes/api/.* run-api-workflow true
+            apps/api/.* run-api-workflow true
+            docker/api/.* run-api-workflow true
+          config-path: .circleci/workflow.yml
