@@ -22,13 +22,13 @@ App
 - kubectl create -f _env/app-stg.yml
 - kubectl create -f _env/upload-stg.yml
 
-api Stg
-- kubectl apply --validate=true -f _kubernetes/api/stg/api.stg.yml
+Api Stg
+- kubectl apply --validate=true -f _kubernetes/api/stg/service.stg.yml
 - kubectl apply --validate=true -f _kubernetes/api/stg/deployment.stg.yml
 - kubectl apply --validate=true -f _kubernetes/ingress.stg.yml
 
 Worker
-- kubectl apply --validate=true -f _kubernetes/worker/stg/api.stg.yml
+- kubectl apply --validate=true -f _kubernetes/worker/stg/service.stg.yml
 - kubectl apply --validate=true -f _kubernetes/worker/stg/deployment.stg.yml
 
 Admin

@@ -83,3 +83,25 @@ spec:
                 name: wp-service-srv
                 port:
                   number: 7000
+
+    - host: finfrac-api.bytegum.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: finfrac-api-stg-srv
+                port:
+                  number: 7000
+
+    - host: finfrac-worker.bytegum.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: finfrac-worker-stg-srv
+                port:
+                  number: 7000
