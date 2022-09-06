@@ -1,6 +1,5 @@
 import { Utils, WorkerQueue } from 'finfrac/core/shared';
 
-
 export class Job {
   public queueName: string;
   public id: string;

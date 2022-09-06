@@ -22,7 +22,7 @@ export class AppController {
     @InjectConnection()
     private readonly connection: Connection,
   ) {}
-  
+
   @Get('/ping')
   @HealthCheck()
   checkService() {
@@ -31,12 +31,12 @@ export class AppController {
         Promise.resolve<HealthIndicatorResult>({
           api: {
             status: 'up',
-            environment: this.config.get('app.environment'),
-          },
+            environment: this.config.get('app.environment')
+          }
         }),
       () =>
         this.mongoService.pingCheck('mongoDB', {
-          connection: this.connection,
+          connection: this.connection
         }),
       () => this.typeOrmService.pingCheck('postgres-db')
     ]);

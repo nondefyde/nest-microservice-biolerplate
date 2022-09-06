@@ -6,8 +6,8 @@ import { EmailAccount, EmailAccountSchema } from 'finfrac/core/models';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: EmailAccount.name, schema: EmailAccountSchema },
-    ]),
+      { name: EmailAccount.name, schema: EmailAccountSchema }
+    ])
   ],
   providers: [SendgridService]
 })

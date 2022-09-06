@@ -1,4 +1,4 @@
 export type EmailConfigOption = {
-  apiKey: string
-  secretKey?: string
-}
+  apiKey: string;
+  secretKey?: string;
+};

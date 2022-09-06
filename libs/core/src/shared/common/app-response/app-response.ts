@@ -2,7 +2,7 @@
  * The AppResponse class
  */
 import { HttpStatus } from '@nestjs/common';
-import { ResponseOption } from "finfrac/core/shared";
+import { ResponseOption } from 'finfrac/core/shared';
 
 export class AppResponse {
   /**

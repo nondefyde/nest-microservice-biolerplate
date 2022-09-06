@@ -10,10 +10,7 @@ import { TerminusModule } from '@nestjs/terminus';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [
-        '_env/worker/.env.local',
-        '_env/.env'
-      ],
+      envFilePath: ['_env/worker/.env.local', '_env/.env'],
       load: [configuration]
     }),
     TerminusModule,

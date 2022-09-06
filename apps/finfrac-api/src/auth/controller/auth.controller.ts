@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Post,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthService } from '../service/auth.service';
 import { AuthSMS } from '../auth.sms';
@@ -20,8 +11,7 @@ import {
   SendVerificationDto,
   SignInDto,
   SignUpDto,
-  VerifyEmailDto,
-  VerifyMobileDto
+  VerifyEmailDto
 } from 'finfrac/core/shared/dto';
 import { CurrentUser, QueryParser, ResponseOption } from 'finfrac/core/shared';
 import { JwtAuthGuard, LocalAuthGuard } from '../guards';
@@ -39,21 +29,21 @@ export class AuthController {
     const queryParser = new QueryParser(Object.assign({}, req.query));
     const { accessToken, auth } = await this.service.signUp(signUpDto);
     const email = await AuthEmail.verifyEmail(
-        {
-          from: this.config.get('app.fromEmail'),
-          template: this.config.get('app.templates.email.verify'),
-          verificationCodes: auth.verificationCodes?.email?.code,
-        },
-        auth,
-      )
+      {
+        from: this.config.get('app.fromEmail'),
+        template: this.config.get('app.templates.email.verify'),
+        verificationCodes: auth.verificationCodes?.email?.code
+      },
+      auth
+    );
     const response = await this.service.getResponse(<ResponseOption>{
       email,
       token: accessToken,
       queryParser,
       code: HttpStatus.OK,
       value: {
-        ..._.pick(auth, ['verifications', 'bvn', '_id']),
-      },
+        ..._.pick(auth, ['verifications', 'bvn', '_id'])
+      }
     });
     return res.status(HttpStatus.OK).json(response);
   }
@@ -141,16 +131,16 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   public async passwordReset(@Body() resetCodeDto: ResetCodeDto, @Res() res) {
     const auth = await this.service.requestPasswordRequest(resetCodeDto);
-    let OTPCall: any = {};
-    const email =  await AuthEmail.verifyEmail(
+    const OTPCall: any = {};
+    const email = await AuthEmail.verifyEmail(
       {
         from: this.config.get('app.fromEmail'),
         type: 'password reset',
         subject: 'Reset password verification',
         template: this.config.get('app.templates.email.verify'),
-        verificationCodes: auth.verificationCodes?.resetPassword?.code,
+        verificationCodes: auth.verificationCodes?.resetPassword?.code
       },
-      auth,
+      auth
     );
     const response = await this.service.getResponse({
       code: HttpStatus.OK,

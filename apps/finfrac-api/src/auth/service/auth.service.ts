@@ -45,19 +45,19 @@ export class AuthService extends BaseService {
        * Throws error if bvn already exist
        */
       const { email, password } = signUpDto;
-
-      let auth = await this.model.findOne({email});
+  
+      let auth = await this.model.findOne({ email });
       if (auth) {
         throw AppException.CONFLICT(lang.get('auth').userExist);
       }
-
+  
       const hashedPassword = await bcrypt.hash(password, 10);
       const expiration = Utils.addHourToDate(1);
       const code = this.getCode();
-
-      let filter: any = { email: email };
-      let verificationCode: any = {
-        'verificationCodes.email': { code, expiration },
+  
+      const filter: any = { email: email };
+      const verificationCode: any = {
+        'verificationCodes.email': { code, expiration }
       };
       session = await this.model.startSession();
       await session.startTransaction();
@@ -65,7 +65,7 @@ export class AuthService extends BaseService {
         filter,
         {
           $setOnInsert: {
-            publicId: Utils.generateUniqueId('auth'),
+            publicId: Utils.generateUniqueId('auth')
           },
           password: hashedPassword,
           $set: verificationCode,
@@ -259,7 +259,7 @@ export class AuthService extends BaseService {
    * @return {Promise} The result of the find
    */
   async requestPasswordRequest(payload: ResetCodeDto) {
-    const auth = await this.model.findOne({email: payload.email});
+    const auth = await this.model.findOne({ email: payload.email });
     if (!auth) {
       throw AppException.NOT_FOUND(lang.get('error').not_found);
     }

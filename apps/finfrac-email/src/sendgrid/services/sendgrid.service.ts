@@ -1,22 +1,22 @@
-import { Injectable } from "@nestjs/common";
-import { EmailConfigOption, EmailOptions } from "../interfaces";
-import * as sgMail from "@sendgrid/mail";
-import { AppException } from "finfrac/core/shared";
-import { EmailService } from "../abstract/email-service";
+import { Injectable } from '@nestjs/common';
+import { EmailConfigOption, EmailOptions } from '../interfaces';
+import * as sgMail from '@sendgrid/mail';
+import { AppException } from 'finfrac/core/shared';
+import { EmailService } from '../abstract/email-service';
 
 @Injectable()
 export class SendgridService extends EmailService {
   readonly apiKey: string;
-
+  
   constructor(option: EmailConfigOption) {
     super();
-    this.apiKey = option.apiKey
+    this.apiKey = option.apiKey;
   }
 
   async sendEmail(option: EmailOptions) {
     try {
       const validation = await this.validateOptions(option);
-      if(validation instanceof AppException) {
+      if (validation instanceof AppException) {
         throw validation;
       }
       sgMail.setApiKey(`${this.apiKey}`);
@@ -38,13 +38,10 @@ export class SendgridService extends EmailService {
         message.attachments = option.attachments;
       }
       if (option.substitutions) {
-        message.dynamic_template_data = Object.assign(
-          {},
-          option.substitutions,
-        );
+        message.dynamic_template_data = Object.assign({}, option.substitutions);
       }
       return sgMail.send(message);
-    }catch (e) {
+    } catch (e) {
       console.log('Email sendgrid error >>>> ', e);
     }
   }

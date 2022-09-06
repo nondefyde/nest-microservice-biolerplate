@@ -18,7 +18,7 @@ export class EmailAccount {
     ref: 'User',
   })
   user: string;
-  
+
   @Prop({
     type: String,
     required: true,

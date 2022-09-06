@@ -16,12 +16,11 @@ export class MediaService extends BaseService {
 
   /**
    * @param {Object} obj The payload object
-   * @param {Object} session The payload object
    * @return {Object}
    */
-  public async createNewObject(obj, session?) {
+  public async createNewObject(obj) {
     return new this.model({
-      ...obj,
+      ...obj
     }).save();
   }
 }

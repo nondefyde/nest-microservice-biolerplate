@@ -1,7 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 import { Connection } from 'mongoose';
 import {
-  HealthCheck, HealthCheckService,
+  HealthCheck,
+  HealthCheckService,
   HealthIndicatorResult,
   MicroserviceHealthIndicator,
   MongooseHealthIndicator

@@ -141,7 +141,10 @@ export class PGBaseService extends BaseAbstract {
     if (dateFilters && dateFilters.length > 0) {
       dateFilters.forEach((key: string) => {
         if (queryParser.query[key]) {
-          queryParser.query[key] = Utils.generateDateRange(queryParser.query[key], 'SQL');
+          queryParser.query[key] = Utils.generateDateRange(
+            queryParser.query[key],
+            'SQL'
+          );
         }
       });
     }

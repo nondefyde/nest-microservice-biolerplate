@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import * as sgMail from '@sendgrid/mail';
 import * as fs from 'fs';
 import * as ejs from 'ejs';
-import * as postmark from 'postmark';
 
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';

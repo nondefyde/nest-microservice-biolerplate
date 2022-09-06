@@ -11,14 +11,11 @@ gsutil cors set cors.json gs://bytegum_dev
 Deployment Steps
 - docker build -t finfrac-api -f ./docker/api/Dockerfile ./
 - docker build -t finfrac-worker -f ./docker/worker/Dockerfile ./
-- docker build -t finfrac-admin -f ./docker/admin/Dockerfile ./
 - docker tag finfrac-api:latest gcr.io/bytegum/finfrac-api:latest
-- docker tag finfrac-admin:latest gcr.io/bytegum/finfrac-admin:latest
 - docker tag finfrac-worker:latest gcr.io/bytegum/finfrac-worker:latest
 - docker push gcr.io/bytegum/finfrac-api:latest
 - docker push gcr.io/bytegum/finfrac-worker:latest
-- docker push gcr.io/bytegum/finfrac-admin:latest
-- kubectl create secret generic finfrac-gc-stg --namespace=stg --from-file=/Users/emmanuelokafor/keys/bytegum.json
+- kubectl create secret generic finfrac-gc-stg --namespace=stg --from-file=/Users/okaforchukwunonso/keys/bytegum.json
 
 App
 - kubectl create -f _kubernetes/namespace.stg.yml

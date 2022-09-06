@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import {ArgumentMetadata, HttpStatus, Injectable, PipeTransform,} from '@nestjs/common';
-import {validate, ValidationError} from 'class-validator';
-import {plainToInstance} from 'class-transformer';
-import {AppException} from '../../exceptions';
+import { ArgumentMetadata, HttpStatus, Injectable, PipeTransform } from '@nestjs/common';
+import { validate, ValidationError } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
+import { AppException } from '../../exceptions';
 
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {

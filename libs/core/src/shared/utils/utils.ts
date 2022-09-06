@@ -129,28 +129,33 @@ export class Utils {
   /**
    * {Date} Generate date range of a single date based on start and end of day
    */
-  public static generateSingleDateRange(date: string, dbType: string = 'NoSQL') {
+  public static generateSingleDateRange(date: string, dbType = 'NoSQL') {
     const startDate = dateFns.startOfDay(dateFns.parseISO(date));
     const endDate = dateFns.endOfDay(dateFns.parseISO(date));
     return dbType === 'NoSql'
       ? { $lte: startDate, $gte: endDate }
       : Between(startDate, endDate);
   }
-
+  
   /**
    * Generate date range based on give start and end dates
    */
-  public static generateDateRange(obj: any, dbType: string = 'NoSQL') {
+  public static generateDateRange(obj: any, dbType = 'NoSQL') {
     try {
       const dateRange: any = JSON.parse(obj);
       if (dateRange && dateRange.startDate && dateRange.endDate) {
-        const startDate = dateFns.startOfDay(dateFns.parseISO(dateRange.startDate));
+        const startDate = dateFns.startOfDay(
+          dateFns.parseISO(dateRange.startDate)
+        );
         const endDate = dateFns.endOfDay(dateFns.parseISO(dateRange.endDate));
         return dbType === 'NoSQL'
           ? { $lte: startDate, $gte: endDate }
           : Between(startDate, endDate);
       }
-      return this.generateSingleDateRange(dateRange.startDate || dateRange.endDate || new Date(), dbType);
+      return this.generateSingleDateRange(
+        dateRange.startDate || dateRange.endDate || new Date(),
+        dbType
+      );
     } catch (e) {
       return this.generateSingleDateRange(obj, dbType);
     }

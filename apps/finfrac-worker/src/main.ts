@@ -11,7 +11,7 @@ async function bootstrap() {
     cors: true
   });
   const config = app.get(ConfigService);
-  
+
   app.use(morgan('tiny'));
   app.setGlobalPrefix('v1');
   app.useGlobalFilters(new WorkerExceptionFilter());
@@ -33,7 +33,9 @@ async function bootstrap() {
   
   console.log('port >>>>>>>>> : ', config.get('worker.port'));
   await app.listen(config.get(`worker.port`), () =>
-    Logger.log(`WorkerService is listening... port ${config.get('worker.port')}`),
+    Logger.log(
+      `WorkerService is listening... port ${config.get('worker.port')}`
+    )
   );
   await app.startAllMicroservices();
 }

@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HttpModule } from '@nestjs/axios';
 import { MongooseModule } from '@nestjs/mongoose';
-import * as path from "path";
+import * as path from 'path';
 import { WORKER_PROVIDERS } from 'finfrac/core/shared';
 import { FileUploadService, JobService, WorkService } from 'finfrac/core/service';
 
@@ -57,7 +57,7 @@ import { FileUploadService, JobService, WorkService } from 'finfrac/core/service
               : false,
         };
       },
-      inject: [ConfigService],
+      inject: [ConfigService]
     }),
   ],
   providers: [
@@ -65,13 +65,8 @@ import { FileUploadService, JobService, WorkService } from 'finfrac/core/service
     FileUploadService,
     WorkService,
     JobService,
-    CoreService,
+    CoreService
   ],
-  exports: [
-    ...WORKER_PROVIDERS,
-    FileUploadService,
-    WorkService,
-    JobService,
-  ]
+  exports: [...WORKER_PROVIDERS, FileUploadService, WorkService, JobService]
 })
 export class CoreModule {}
