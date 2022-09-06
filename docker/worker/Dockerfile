@@ -11,7 +11,7 @@ COPY ./package*.json ./*.lock ./tsconfig.json ./tsconfig.build.json ./nest-cli.j
 RUN yarn install --frozen-lockfile --dev
 
 # Copy sources
-COPY ./apps/worker ./apps/worker
+COPY ./apps/finfrac-worker ./apps/finfrac-worker
 COPY ./config ./config
 COPY ./libs ./libs
 COPY ./templates ./templates
@@ -31,7 +31,7 @@ COPY package.json ./
 RUN yarn install --frozen-lockfile --production
 
 COPY --from=builder /usr/src/app/templates ./templates
-COPY --from=builder /usr/src/app/dist/apps/worker ./dist
+COPY --from=builder /usr/src/app/dist/apps/finfrac-worker ./dist
 
 EXPOSE 7000
 

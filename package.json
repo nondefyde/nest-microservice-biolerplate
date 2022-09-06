@@ -1,5 +1,5 @@
 {
-  "name": "finfrac-services",
+  "name": "finfrac-api",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -8,6 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "build:worker": "nest build finfrac-worker",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
