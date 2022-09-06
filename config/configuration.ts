@@ -29,6 +29,7 @@ export const configuration = () => ({
     },
   },
   worker: {
+    port: process.env.PORT || 7000,
     fileUpload: {
       default: process.env.DEFAULT_STORAGE || 's3',
       gcs: {

@@ -31,8 +31,7 @@ export class AuthService extends BaseService {
     protected workService: WorkService,
     protected config: ConfigService,
   ) {
-    super();
-    this.model = model;
+    super(model);
   }
 
   /**
