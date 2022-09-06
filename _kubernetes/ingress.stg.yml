@@ -1,0 +1,85 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: stg
+  name: staging-ingrs
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "staging-ip"
+spec:
+  rules:
+    - host: mc-api.bytegum.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: mc-service-srv
+                port:
+                  number: 7000
+
+    - host: mc-app.bytegum.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: mc-app-srv
+                port:
+                  number: 7000
+
+    - host: ksh-stg-api.bytegum.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: ksh-service-stg-srv
+                port:
+                  number: 7000
+
+    - host: ksh-stg-admin.bytegum.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: ksh-admin-stg-srv
+                port:
+                  number: 7000
+
+    - host: ksh-stg-worker.bytegum.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: ksh-worker-stg-srv
+                port:
+                  number: 7000
+
+    - host: ksh-app.bytegum.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: ksh-app-srv
+                port:
+                  number: 7000
+
+    - host: wp-stg-api.bytegum.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: wp-service-srv
+                port:
+                  number: 7000

@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { configuration } from '@config';
 import { CoreModule } from 'finfrac/core';
 import { MediaModule } from './media/media.module';
+import { TerminusModule } from '@nestjs/terminus';
 
 @Module({
   imports: [
@@ -13,10 +14,11 @@ import { MediaModule } from './media/media.module';
         '_env/worker/.env.local',
         '_env/.env'
       ],
-      load: [configuration],
+      load: [configuration]
     }),
+    TerminusModule,
     CoreModule,
-    MediaModule,
+    MediaModule
   ],
   controllers: [FinfracWorkerController],
   providers: [],

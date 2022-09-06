@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ksh-service-stg-dpl
+  namespace: stg
+  labels:
+    #Project ID
+    app: ksh-service
+spec:
+  #Run one instances of our application
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ksh-service-stg-pod
+  template:
+    metadata:
+      labels:
+        app: ksh-service-stg-pod
+    spec:
+      #Container details
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+      containers:
+        - name: ksh-service
+          image: gcr.io/bytegum/ksh-service:latest
+          imagePullPolicy: Always
+          #Ports to expose
+          ports:
+            - containerPort: 7000
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: ksh-app-stg
+            - secretRef:
+                name: ksh-upload-stg
+          env:
+            - name: DEFAULT_STORAGE
+              value: gcs
+
+          volumeMounts:
+            - name: gcs-service-account
+              mountPath: "/var/run/secret/cloud.google.com"
+
+          readinessProbe:
+            initialDelaySeconds: 15
+            httpGet:
+              path: /v1/ping
+              port: 7000
+            periodSeconds: 30
+          livenessProbe:
+            initialDelaySeconds: 15
+            httpGet:
+              path: /v1/ping
+              port: 7000
+            periodSeconds: 30
+
+      volumes:
+        - name: gcs-service-account
+          secret:
+            secretName: ksh-gc-stg

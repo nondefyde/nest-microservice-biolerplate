@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ksh-worker-stg-dpl
+  namespace: stg
+  labels:
+    #Project ID
+    app: ksh-worker
+spec:
+  #Run one instances of our application
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ksh-worker-stg-pod
+  template:
+    metadata:
+      labels:
+        app: ksh-worker-stg-pod
+    spec:
+      #Container details
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+      containers:
+        - name: ksh-worker
+          image: gcr.io/bytegum/ksh-worker:latest
+          imagePullPolicy: Always
+          #Ports to expose
+          ports:
+            - containerPort: 7000
+              name: worker
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: ksh-app-stg
+            - secretRef:
+                name: ksh-upload-stg
+          env:
+            - name: DEFAULT_STORAGE
+              value: gcs
+
+          volumeMounts:
+            - name: gcs-worker-account
+              mountPath: "/var/run/secret/cloud.google.com"
+
+          readinessProbe:
+            initialDelaySeconds: 15
+            httpGet:
+              path: /v1/ping
+              port: 7000
+            periodSeconds: 30
+          livenessProbe:
+            initialDelaySeconds: 15
+            httpGet:
+              path: /v1/ping
+              port: 7000
+            periodSeconds: 30
+
+      volumes:
+        - name: gcs-worker-account
+          secret:
+            secretName: ksh-gc-stg

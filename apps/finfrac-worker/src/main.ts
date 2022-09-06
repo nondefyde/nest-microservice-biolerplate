@@ -4,11 +4,11 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { ResponseFilter, WorkerExceptionFilter, WorkerQueue } from 'finfrac/core/shared';
 import { Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
-import { AppModule } from '../../finfrac-api/src/app.module';
+import { FinfracWorkerModule } from './finfrac-worker.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    cors: true,
+  const app = await NestFactory.create(FinfracWorkerModule, {
+    cors: true
   });
   const config = app.get(ConfigService);
   

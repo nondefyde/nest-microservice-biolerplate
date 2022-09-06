@@ -1,0 +1,167 @@
+GOOGLE_PROJECT_ID=bytegum
+GCLOUD_SERVICE_KEY
+GOOGLE_COMPUTE_ZONE=us-central1-c
+
+docker build  -f ./docker/service/Dockerfile $docker_tag_args ./
+docker run -p 4000:7000 ksh-worker
+
+gsutil cors get gs://bytegum_dev
+gsutil cors set cors.json gs://bytegum_dev
+
+Deployment Steps
+- docker build -t ksh-service -f ./docker/service/Dockerfile ./
+- docker build -t ksh-worker -f ./docker/worker/Dockerfile ./
+- docker build -t ksh-admin -f ./docker/admin/Dockerfile ./
+- docker tag ksh-service:latest gcr.io/bytegum/ksh-service:latest
+- docker tag ksh-admin:latest gcr.io/bytegum/ksh-admin:latest
+- docker tag ksh-worker:latest gcr.io/bytegum/ksh-worker:latest
+- docker push gcr.io/bytegum/ksh-service:latest
+- docker push gcr.io/bytegum/ksh-worker:latest
+- docker push gcr.io/bytegum/ksh-admin:latest
+- kubectl create secret generic ksh-gc-stg --namespace=stg --from-file=/Users/emmanuelokafor/keys/bytegum.json
+
+App
+- kubectl create -f _kubernetes/namespace.stg.yml
+- kubectl create -f _env/app-stg.yml
+- kubectl create -f _env/upload-stg.yml
+
+Service Stg
+- kubectl apply --validate=true -f _kubernetes/service/stg/service.stg.yml
+- kubectl apply --validate=true -f _kubernetes/service/stg/deployment.stg.yml
+- kubectl apply --validate=true -f _kubernetes/ingress.stg.yml
+
+Worker
+- kubectl apply --validate=true -f _kubernetes/worker/stg/service.stg.yml
+- kubectl apply --validate=true -f _kubernetes/worker/stg/deployment.stg.yml
+
+Admin
+- kubectl apply --validate=true -f _kubernetes/admin/stg/service.stg.yml
+- kubectl apply --validate=true -f _kubernetes/admin/stg/deployment.stg.yml
+- kubectl create -f _kubernetes/stg/namespace.stg.yml
+
+Production
+- kubectl apply --validate=true -f _kubernetes/namespace.prod.yml
+- kubectl apply --validate=true -f kubernetes/prod/deployment.prod.yml
+- kubectl apply --validate=true -f kubernetes/prod/service.prod.yml
+
+git rm -r one-of-the-directories
+git rm --cached file1.txt
+
+Logs
+- kubectl logs -f deployment/ksh-service-stg-dpl --namespace=stg --container=ksh-service
+- kubectl logs -f deployment/ksh-worker-stg-dpl --namespace=stg --container=ksh-worker
+- kubectl exec -it deployment/ksh-hexjunkey-dpl --namespace=kc-stg -- sh
+
+Redis
+- gcloud redis instances create kc-redis-main --region=us-central1-c
+
+Secret Management
+- kubectl get secret --namespace=kc-stg
+- kubectl delete secret/my-db-secret
+- kubectl delete ksh-service-stg --namespace=kc-stg
+
+------------------------------------------------------------------------------------------
+
+https://whatdafox.com/deploy-nest-js-on-google-cloud-run/
+## Docker ##
+To safely safely remove each 'image' i
+ - docker-compose down --rmi local
+
+Tag the image to a registry for easier management
+ - docker tag ksh-service:latest gcr.io/kola-web-app/ksh-service:latest
+
+Then we can push the image to Google’s Container Registry (GCR) with:
+ - docker push gcr.io/kola-web-app/ksh-service:latest
+
+## Gcloud ##
+Create configurations
+ - gcloud config configurations create cloud-run
+To login
+ - gcloud auth login
+Set Default project
+ - gcloud config set project bytegum
+List Projects
+ - gcloud projects list
+Install components
+ - gcloud components install kubectl
+Create clusters
+ - gcloud container clusters create circle-ci-cluster
+List clusters
+ - gcloud container clusters list
+
+List Service accounts
+- gcloud iam service-accounts list
+
+Create Secrets
+- kubectl create secret generic pg-srv-stg --namespace=stg --from-file=/Users/okaforchukwunonso/keys/bytegum-sql-stg.json
+
+
+#### GCloud as a Docker credential helper
+
+Create Service account Key
+- gcloud iam service-accounts keys create ~/gc-service-key.json --iam-account kola-credit-services@kola-credit-services.iam.gserviceaccount.com
+  ## created key [e44da1202f82f8f4bdd9d92bc412d1d8a837fa83] of type [json] as
+    [/usr/home/username/gc-service-key.json] for
+    [metacomics@bytegum.iam.gserviceaccount.com]
+
+To configure authentication with service account credentials, run the following command:
+- gcloud auth activate-service-account metacomics@bytegum.iam.gserviceaccount.com --key-file=/Users/okaforchukwunonso/keys/bytegum-sql-stg.json
+
+Configure Docker with the following command:
+- gcloud worker configure-docker
+
+
+## https://cloud.google.com/sdk/gcloud/reference/container/images/list
+List gcloud repository images
+- gcloud container images list --repository=gcr.io/kola-credit-services
+
+
+Kube8
+Generating a kubeconfig entry
+- gcloud container clusters get-credentials cluster-dev --zone=us-central1-c
+
+Dry run for deployment and services
+- kubectl apply --validate=true --dry-run=true -f ops/
+
+Dry run for deployment and services
+- kubectl apply --validate=true -f ops/
+- kubectl delete ingress <faulty_ingress>
+
+Get name spaces
+- kubectl get namespaces
+
+list the services in staging namespace:
+- kubectl get services --namespace=stg
+
+Describe ingress
+- kubectl get ingress ksh-service --namespace=stg
+
+To Create static ip
+- gcloud compute addresses create ksh-service-stg-static-ip --global
+
+To describe ip address
+- gcloud compute addresses describe ksh-service-stg-static-ip --global
+
+To view deployment logs
+- kubectl logs ksh-service-dpl-5f7fd4456-t54vb ksh-service --namespace=kc-stg
+
+Secret Management
+- kubectl get secret kola-sa-secrets -o jsonpath='{.data}'
+- kubectl get secret --namespace=kc-stg
+- kubectl delete secret/my-db-secret
+- kubectl delete ksh-service-stg --namespace=kc-stg
+
+
+## IP ADD STAGING : 35.227.215.139
+
+kubectl config use-context CONTEXT-CHOSEN-FROM-PREVIOUS-COMMAND-OUTPUT
+
+
+gcloud container clusters get-credentials cluster-dev --zone us-central1-c
+
+https://api.cloudamqp.com/
+
+kubectl create secret generic pg-dev-stg --namespace=stg \
+  --from-literal=username=kassh \
+  --from-literal=password=Kassh_1 \
+  --from-literal=database=kassh

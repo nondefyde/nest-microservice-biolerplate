@@ -30,12 +30,14 @@ export const configuration = () => ({
   },
   worker: {
     port: process.env.PORT || 7000,
+    rabbitMQ: process.env.RABBIT_MQ_URL || 'amqp://localhost:5672',
+    redisUrl: process.env.REDIS_SERVER_HOST_URL,
     fileUpload: {
       default: process.env.DEFAULT_STORAGE || 's3',
       gcs: {
         projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
         keyFile: process.env.GOOGLE_CLOUD_KEYFILE,
-        bucket: process.env.GOOGLE_CLOUD_STORAGE_BUCKET,
+        bucket: process.env.GOOGLE_CLOUD_STORAGE_BUCKET
       },
       s3: {
         key: process.env.AWS_ACCESS_KEY,
