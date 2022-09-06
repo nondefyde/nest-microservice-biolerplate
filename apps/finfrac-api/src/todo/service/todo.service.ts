@@ -1,16 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
+import { BaseService } from "finfrac/core/base";
 
 @Injectable()
-export class TodoService {
-  public routes = {
-    create: false,
-    findOne: true,
-    find: true,
-    update: false,
-    patch: false,
-    remove: false,
-  };
-  constructor(
-  ) {
-  }
+export class TodoService extends BaseService {
 }

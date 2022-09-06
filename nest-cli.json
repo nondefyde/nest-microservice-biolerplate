@@ -35,6 +35,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/core/tsconfig.lib.json"
       }
+    },
+    "finfrac-email": {
+      "type": "application",
+      "root": "apps/finfrac-email",
+      "entryFile": "main",
+      "sourceRoot": "apps/finfrac-email/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/finfrac-email/tsconfig.app.json"
+      }
     }
   }
 }
