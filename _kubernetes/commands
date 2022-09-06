@@ -1,5 +1,5 @@
 GOOGLE_PROJECT_ID=bytegum
-GCLOUD_api_KEY
+GCLOUD_SERVICE_KEY
 GOOGLE_COMPUTE_ZONE=us-central1-c
 
 docker build  -f ./docker/api/Dockerfile $docker_tag_args ./

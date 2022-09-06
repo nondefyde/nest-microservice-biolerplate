@@ -17,4 +17,6 @@ workflows:
             _kubernetes/api/.* run-api-workflow true
             apps/api/.* run-api-workflow true
             docker/api/.* run-api-workflow true
+            apps/worker/.* run-worker-workflow true
+            docker/worker/.* run-worker-workflow true
           config-path: .circleci/workflow.yml

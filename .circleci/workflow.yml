@@ -11,15 +11,11 @@ references:
 
 parameters:
   # A parameter per package
-  run-service-workflow:
+  run-api-workflow:
     type: boolean
     default: false
 
   run-worker-workflow:
-    type: boolean
-    default: false
-
-  run-admin-workflow:
     type: boolean
     default: false
 
@@ -97,34 +93,19 @@ jobs:
       - run: yarn lint
       - run: yarn build
 
-  # Service staging jobs for meta comics
-  deploy-service-stg:
-    description: Deploy Service Staging to GCP
+  # api staging jobs for meta comics
+  deploy-api-stg:
+    description: Deploy api Staging to GCP
     machine: true
     steps:
       - gcr/gcr-auth
       - gke/install
       - gke/rollout-image:
           cluster: cluster-dev
-          container: ksh-service
+          container: finfrac-api
           namespace: 'stg'
-          deployment: ksh-service-stg-dpl
-          image: gcr.io/$GOOGLE_PROJECT_ID/ksh-service
-          tag: $CIRCLE_SHA1
-
-  # Worker deployment jobs for meta comics
-  deploy-admin-stg:
-    description: Deploy Admin Staging to GCP
-    machine: true
-    steps:
-      - gcr/gcr-auth
-      - gke/install
-      - gke/rollout-image:
-          cluster: cluster-dev
-          container: ksh-admin
-          namespace: 'stg'
-          deployment: ksh-admin-stg-dpl
-          image: gcr.io/$GOOGLE_PROJECT_ID/ksh-admin
+          deployment: finfrac-api-stg-dpl
+          image: gcr.io/$GOOGLE_PROJECT_ID/finfrac-api
           tag: $CIRCLE_SHA1
 
   # Worker deployment jobs for meta comics
@@ -136,19 +117,19 @@ jobs:
       - gke/install
       - gke/rollout-image:
           cluster: cluster-dev
-          container: ksh-worker
+          container: finfrac-worker
           namespace: 'stg'
-          deployment: ksh-worker-stg-dpl
-          image: gcr.io/$GOOGLE_PROJECT_ID/ksh-worker
+          deployment: finfrac-worker-stg-dpl
+          image: gcr.io/$GOOGLE_PROJECT_ID/finfrac-worker
           tag: $CIRCLE_SHA1
 
 workflows:
   version: 2
 
-  deploy-service-stg-approve-prod:
+  deploy-api-stg-approve-prod:
     when:
       or:
-        - << pipeline.parameters.run-service-workflow >>
+        - << pipeline.parameters.run-api-workflow >>
         - << pipeline.parameters.config-updated >>
         - << pipeline.parameters.shared-lib-updated >>
         - << pipeline.parameters.templates-updated >>
@@ -160,34 +141,11 @@ workflows:
           <<: *main_only
           requires:
             - build-dependencies
-          image: ksh-service
+          image: finfrac-api
           docker-context: ./
-          dockerfile: ./docker/service/Dockerfile
+          dockerfile: ./docker/api/Dockerfile
           tag: $CIRCLE_SHA1
-      - deploy-service-stg:
-          requires:
-            - gcr/build-and-push-image
-
-  deploy-admin-stg-approve-prod:
-    when:
-      or:
-        - << pipeline.parameters.run-admin-workflow >>
-        - << pipeline.parameters.config-updated >>
-        - << pipeline.parameters.shared-lib-updated >>
-        - << pipeline.parameters.templates-updated >>
-        - << pipeline.parameters.ci-updated >>
-    jobs:
-      - build-dependencies:
-          <<: *main_only
-      - gcr/build-and-push-image:
-          <<: *main_only
-          requires:
-            - build-dependencies
-          image: ksh-admin
-          docker-context: ./
-          dockerfile: ./docker/admin/Dockerfile
-          tag: $CIRCLE_SHA1
-      - deploy-admin-stg:
+      - deploy-api-stg:
           requires:
             - gcr/build-and-push-image
 
@@ -206,7 +164,7 @@ workflows:
           <<: *main_only
           requires:
             - build-dependencies
-          image: ksh-worker
+          image: finfrac-worker
           docker-context: ./
           dockerfile: ./docker/worker/Dockerfile
           tag: $CIRCLE_SHA1
