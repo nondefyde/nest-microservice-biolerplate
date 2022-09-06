@@ -30,6 +30,7 @@ export class AppController {
       () =>
         Promise.resolve<HealthIndicatorResult>({
           api: {
+            app: this.config.get('app.appName'),
             status: 'up',
             environment: this.config.get('app.environment')
           }

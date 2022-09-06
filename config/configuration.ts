@@ -1,14 +1,14 @@
 export const configuration = () => ({
   app: {
-    appName: process.env.APP_NAME || 'FINFRAC',
-    apikey: process.env.API_KEY || 'FINFRACKEY',
+    appName: process.env.APP_NAME || 'FinFrac',
+    apikey: process.env.API_KEY || 'FinFracKay',
     serviceName: process.env.SERVICE_NAME || 'Api Service',
     environment: process.env.NODE_ENV || 'development',
     encryption_key: process.env.SERVER_SECRET || 'AppSecret',
     jwt_expiration: process.env.JWT_EXPIRATION || 172800,
     port: process.env.PORT || 7000,
     pagination: {
-      itemsPerPage: 10,
+      itemsPerPage: 10
     },
     rabbitMQ: process.env.RABBIT_MQ_URL || 'amqp://localhost:5672',
     redisUrl: process.env.REDIS_SERVER_HOST_URL,

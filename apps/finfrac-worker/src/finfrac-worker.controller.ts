@@ -28,8 +28,9 @@ export class FinfracWorkerController {
       () =>
         Promise.resolve<HealthIndicatorResult>({
           worker: {
+            app: this.config.get('app.appName'),
             status: 'up',
-            environment: this.config.get('app.environment'),
+            environment: this.config.get('app.environment')
           },
         }),
       () =>
