@@ -1,24 +1,9 @@
 import { ConfigService } from '@nestjs/config';
-import {
-  Body,
-  Delete,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Next,
-  Param,
-  Patch,
-  Post,
-  Put,
-  Req,
-  Res,
-  UseGuards
-} from '@nestjs/common';
+import { Body, Delete, Get, HttpCode, HttpStatus, Next, Param, Patch, Post, Put, Req, Res } from '@nestjs/common';
 import * as _ from 'lodash';
 import { NextFunction } from 'express';
 import { AppException, Pagination, QueryParser } from 'finfrac/core/shared';
 import { BaseService, PGBaseService } from 'finfrac/core/base';
-import { JwtAuthGuard } from '../../../../../apps/finfrac-api/src/auth/guards';
 
 export class BaseController {
   protected lang: any = {
@@ -56,8 +41,7 @@ export class BaseController {
       next(err);
     }
   }
-
-  @UseGuards(JwtAuthGuard)
+  
   @Post('/')
   @HttpCode(HttpStatus.OK)
   public async create(
@@ -176,8 +160,7 @@ export class BaseController {
       next(err);
     }
   }
-
-  @UseGuards(JwtAuthGuard)
+  
   @Patch('/:id')
   @HttpCode(HttpStatus.OK)
   public async patch(
@@ -223,8 +206,7 @@ export class BaseController {
       return next(err);
     }
   }
-
-  @UseGuards(JwtAuthGuard)
+  
   @Put('/:id')
   @HttpCode(HttpStatus.OK)
   public async update(
@@ -269,8 +251,7 @@ export class BaseController {
       next(err);
     }
   }
-
-  @UseGuards(JwtAuthGuard)
+  
   @Delete('/:id')
   @HttpCode(HttpStatus.OK)
   public async remove(
