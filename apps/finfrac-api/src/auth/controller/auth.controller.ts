@@ -24,7 +24,7 @@ import {
   VerifyMobileDto
 } from 'finfrac/core/shared/dto';
 import { CurrentUser, QueryParser, ResponseOption } from 'finfrac/core/shared';
-import { JwtAuthGuard, LocalAuthGuard } from 'finfrac/core/shared/guards';
+import { JwtAuthGuard, LocalAuthGuard } from '../guards';
 
 @Controller('auth')
 export class AuthController {
@@ -142,33 +142,19 @@ export class AuthController {
   public async passwordReset(@Body() resetCodeDto: ResetCodeDto, @Res() res) {
     const auth = await this.service.requestPasswordRequest(resetCodeDto);
     let OTPCall: any = {};
-    if (resetCodeDto.mobile) {
-      OTPCall = {
-        sms: await AuthSMS.verifyMobile(
-          {
-            template: this.config.get('app.templates.sms.verify'),
-            verificationCodes: auth.verificationCodes?.resetPassword?.code,
-          },
-          auth,
-        ),
-      };
-    }
-    if (resetCodeDto.email) {
-      OTPCall = {
-        email: await AuthEmail.verifyEmail(
-          {
-            from: this.config.get('app.fromEmail'),
-            type: 'password reset',
-            subject: 'Reset password verification',
-            template: this.config.get('app.templates.email.verify'),
-            verificationCodes: auth.verificationCodes?.resetPassword?.code,
-          },
-          auth,
-        ),
-      };
-    }
+    const email =  await AuthEmail.verifyEmail(
+      {
+        from: this.config.get('app.fromEmail'),
+        type: 'password reset',
+        subject: 'Reset password verification',
+        template: this.config.get('app.templates.email.verify'),
+        verificationCodes: auth.verificationCodes?.resetPassword?.code,
+      },
+      auth,
+    );
     const response = await this.service.getResponse({
       code: HttpStatus.OK,
+      email,
       value: {
         email: auth.email,
         success: true,

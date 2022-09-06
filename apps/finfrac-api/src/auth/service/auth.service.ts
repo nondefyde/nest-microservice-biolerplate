@@ -4,7 +4,6 @@ import { Model } from 'mongoose';
 import * as _ from 'lodash';
 import { ConfigService } from '@nestjs/config';
 import lang from '../../../lang';
-import { HttpService } from '@nestjs/axios';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import {
@@ -30,7 +29,6 @@ export class AuthService extends BaseService {
     @InjectModel(User.name) protected userModel: Model<UserDocument>,
     private jwtService: JwtService,
     protected workService: WorkService,
-    protected httpService: HttpService,
     protected config: ConfigService,
   ) {
     super();

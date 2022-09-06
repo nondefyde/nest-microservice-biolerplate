@@ -6,5 +6,5 @@ export enum QueueTasks {
 }
 
 export enum WorkerQueue {
-  PROCESS_WORK = 'wevied.jobs.process.work',
+  PROCESS_WORK = 'finfrac.jobs.process.work',
 }

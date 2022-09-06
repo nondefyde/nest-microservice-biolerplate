@@ -10,6 +10,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "rootDir": ".",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
@@ -18,6 +19,12 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@config": [
+        "config"
+      ],
+      "@config/*": [
+        "config/*"
+      ],
       "finfrac/core": [
         "libs/core/src"
       ],

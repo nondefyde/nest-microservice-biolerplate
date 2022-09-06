@@ -1,6 +1,6 @@
 import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { AppException, AppStatus, Job, QueueTasks } from '@shared/core';
+import { AppException, Job, QueueTasks } from 'finfrac/core/shared';
 
 @Injectable()
 export class JobService {
@@ -20,7 +20,7 @@ export class JobService {
           console.log('job e ::::: ', e);
           Logger.error(
             new AppException(HttpStatus.INTERNAL_SERVER_ERROR, e, [
-              `App error code ${AppStatus.WORKER_ERROR}`,
+              `App error code`,
             ]),
           );
         };

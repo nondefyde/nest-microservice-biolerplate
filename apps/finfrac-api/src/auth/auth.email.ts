@@ -1,4 +1,4 @@
-import { MailOption } from '@shared/core';
+import { MailOption } from 'finfrac/core/shared';
 
 export class AuthEmail {
   static async verifyEmail(config, auth): Promise<MailOption> {

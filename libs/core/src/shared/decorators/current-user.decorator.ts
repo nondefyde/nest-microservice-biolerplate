@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { Auth } from '@shared/core/models';
+import { Auth } from 'finfrac/core/models';
 
 export const extractUser = (request): Auth => request['user'];
 

@@ -1,4 +1,4 @@
-import { SmsOption, Utils } from '@shared/core';
+import { SmsOption, Utils } from 'finfrac/core/shared';
 
 export class AuthSMS {
   static async verifyBVN(config, auth, bvnBasic): Promise<SmsOption> {
