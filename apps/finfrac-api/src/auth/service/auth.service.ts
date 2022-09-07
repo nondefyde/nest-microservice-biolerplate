@@ -72,7 +72,6 @@ export class AuthService extends BaseService {
         },
         { upsert: true, new: true, setDefaultsOnInsert: true, session },
       );
-      // console.log('auth ::: ', auth);
       await this.userModel.findOneAndUpdate(
         { _id: auth._id },
         {
@@ -88,7 +87,6 @@ export class AuthService extends BaseService {
           session,
         },
       );
-      // console.log('auth 2 ::: ', auth);
       await session?.commitTransaction();
       return this.signIn(auth);
     } catch (error) {
@@ -164,9 +162,10 @@ export class AuthService extends BaseService {
       }
       const expiration = Utils.addHourToDate(1);
       const code = this.getCode();
+      console.log('code ::: ', code);
       auth.verificationCodes = {
         ...auth.verificationCodes,
-        [type]: { code, expiration },
+        [type]: { code, expiration }
       };
       return auth.save();
     } catch (error) {
@@ -357,19 +356,12 @@ export class AuthService extends BaseService {
 
   async validateUser(username: string, pass: string): Promise<any> {
     const auth: any = await this.model
-      .findOne({
-        $or: [{ email: username }, { 'mobile.phoneNumber': username }],
-      })
+      .findOne({ email: username })
       .select('+password');
-    console.log('auth:::', auth);
     if (!auth) {
       return null;
     }
-
     const valid = await bcrypt.compare(pass, auth.password);
-
-    console.log('valid ::: ', valid);
-
     if (valid) {
       return auth;
     }

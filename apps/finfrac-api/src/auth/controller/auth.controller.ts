@@ -11,7 +11,8 @@ import {
   SendVerificationDto,
   SignInDto,
   SignUpDto,
-  VerifyEmailDto
+  VerifyEmailDto,
+  VerifyMobileDto
 } from 'finfrac/core/shared/dto';
 import { CurrentUser, QueryParser, ResponseOption } from 'finfrac/core/shared';
 import { JwtAuthGuard, LocalAuthGuard } from '../guards';
@@ -52,18 +53,40 @@ export class AuthController {
   @Post('/sign-in')
   @HttpCode(HttpStatus.OK)
   public async signIn(@Body() signInDto: SignInDto, @Req() req, @Res() res) {
-    // console.log('req:::', req);
     const queryParser = new QueryParser(Object.assign({}, req.query));
     const { accessToken, auth } = await this.service.signIn(req.user);
     const response = await this.service.getResponse(<ResponseOption>{
       token: accessToken,
       queryParser,
       code: HttpStatus.OK,
-      value: auth,
+      value: auth
     });
     return res.status(HttpStatus.OK).json(response);
   }
-
+  
+  
+  @UseGuards(JwtAuthGuard)
+  @Post('/verify-mobile')
+  @HttpCode(HttpStatus.OK)
+  public async verifyMobile(
+    @CurrentUser() authUser: any,
+    @Body() verifyMobileDto: VerifyMobileDto,
+    @Req() req,
+    @Res() res
+  ) {
+    const queryParser = new QueryParser(Object.assign({}, req.query));
+    const auth = await this.service.verifyMobile(authUser, verifyMobileDto);
+    const response = await this.service.getResponse(<ResponseOption>{
+      queryParser,
+      code: HttpStatus.OK,
+      value: {
+        ..._.pick(auth, ['verifications', 'bvn', '_id'])
+      }
+    });
+    return res.status(HttpStatus.OK).json(response);
+  }
+  
+  
   @UseGuards(JwtAuthGuard)
   @Post('/send-verification')
   @HttpCode(HttpStatus.OK)
@@ -71,7 +94,7 @@ export class AuthController {
     @CurrentUser() authUser: any,
     @Body() sendVerificationDto: SendVerificationDto,
     @Req() req,
-    @Res() res,
+    @Res() res
   ) {
     const auth = await this.service.sendVerification(
       authUser,

@@ -5,6 +5,7 @@ import { configuration } from '@config';
 import { CoreModule } from 'finfrac/core';
 import { MediaModule } from './media/media.module';
 import { TerminusModule } from '@nestjs/terminus';
+import { JobModule } from './job/job.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { TerminusModule } from '@nestjs/terminus';
     }),
     TerminusModule,
     CoreModule,
-    MediaModule
+    MediaModule,
+    JobModule
   ],
   controllers: [FinfracWorkerController],
   providers: [],

@@ -10,12 +10,15 @@ export const configuration = () => ({
     pagination: {
       itemsPerPage: 10
     },
+    fromEmail:
+      process.env.EMAIL_NO_REPLY || process.env.POSTMARK_EMAIL_NO_REPLY,
+    defaultVerifyCode: '1234',
     rabbitMQ: process.env.RABBIT_MQ_URL || 'amqp://localhost:5672',
     redisUrl: process.env.REDIS_SERVER_HOST_URL,
     lang: 'en',
     mongodb: {
       url: process.env.DB_URL,
-      test: process.env.DB_TEST_URL,
+      test: process.env.DB_TEST_URL
     },
     rdbms: {
       default: 'postgres',
@@ -24,9 +27,17 @@ export const configuration = () => ({
         port: process.env.POSTGRES_DB_PORT,
         name: process.env.POSTGRES_DB_NAME,
         username: process.env.POSTGRES_DB_USERNAME,
-        password: process.env.POSTGRES_DB_PASSWORD,
-      },
+        password: process.env.POSTGRES_DB_PASSWORD
+      }
     },
+    templates: {
+      email: {
+        verify: 'verify'
+      },
+      sms: {
+        verify: 'verify'
+      }
+    }
   },
   worker: {
     port: process.env.PORT || 7000,
@@ -43,19 +54,25 @@ export const configuration = () => ({
         key: process.env.AWS_ACCESS_KEY,
         secret: process.env.AWS_SECRET_KEY,
         bucket: process.env.AWS_BUCKET,
-        region: process.env.AWS_REGION,
-      },
+        region: process.env.AWS_REGION
+      }
+    },
+    termii: {
+      url: process.env.TERMI_API_URL,
+      apikey: process.env.TERMI_API_KEY,
+      secretkey: process.env.TERNMII_SECRET_KEY,
+      senderId: process.env.TERMII_SENDER_ID
     },
     email: {
       noReply: { email: 'no-reply@getkassh.com', name: 'getKassh' },
       mailOption: 'sendgrid',
       sendgrid: {
         apiKey: process.env.SENDGRID_API_KEY,
-        contactFormRecipient: process.env.CONTACT_FORM_EMAIL_RECIPIENT,
+        contactFormRecipient: process.env.CONTACT_FORM_EMAIL_RECIPIENT
       },
       postmark: {
         apiKey: process.env.POSTMARK_API_KEY,
-        url: process.env.POSTMARK_BASE_URL,
+        url: process.env.POSTMARK_BASE_URL
       },
     },
     workerServiceToken: process.env.WORKER_SERVICE_TOKEN,
