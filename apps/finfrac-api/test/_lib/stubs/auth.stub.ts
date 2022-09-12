@@ -42,10 +42,10 @@ export const signInStub = {
 //   verificationCode: '1234',
 // };
 
-// export const verifyEmailStub = {
-//   email: 'test@gmail.com',
-//   password: 'abcd1234',
-//   verificationCode: '1234',
-// };
+export const verifyEmailStub = {
+  email: 'test@gmail.com',
+  password: 'abcd1234',
+  verificationCode: '1234',
+};
 
 // export const bvn = '12345067891';
