@@ -24,11 +24,7 @@ import { configuration } from '@config';
       inject: [ConfigService],
     }),
   ],
-  providers: [
-    DatabaseService,
-  ],
-  exports: [
-    DatabaseService,
-  ],
+  providers: [DatabaseService],
+  exports: [DatabaseService],
 })
 export class TestCoreModule {}

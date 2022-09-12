@@ -22,7 +22,7 @@ import {
   Utils,
   VerifyEmailDto,
   VerifyMobileDto,
-  WorkService
+  WorkService,
 } from 'finfrac/core';
 
 @Injectable()

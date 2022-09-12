@@ -23,10 +23,7 @@ describe('Sign Up (e2e)', () => {
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        TestCoreModule,
-        AuthModule
-      ]
+      imports: [TestCoreModule, AuthModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
@@ -71,54 +68,37 @@ describe('Sign Up (e2e)', () => {
       );
       expect(response.body.meta.error.messages).toBeInstanceOf(Object);
     });
-    // it('Should test creating a auth/user with the expected details(email and password)', async () => {
-    //   const response = await request(httpServer).post('/auth/sign-up').send({
-    //     email: signUpStub.email,
-    //     password: signUpStub.password,
-    //   });
-    //   tokenEmail = response.body.meta.token;
-    //   userid = response.body.data._id;
-    //   expect(response.status).toBe(200);
-    //   expect(response.body).toBeInstanceOf(Object);
-    //   expect(response.body.meta).toBeInstanceOf(Object);
-    //   expect(response.body.meta).toHaveProperty('token');
-    //   expect(response.body.meta.statusCode).toBe(200);
-    //   expect(response.body.meta.success).toBe(true);
-    //   expect(response.body.data).toBeInstanceOf(Object);
-    //   expect(response.body.data).toHaveProperty('verifications');
-    //   expect(response.body.data).toHaveProperty('_id');
-    // });
-    // it('Should test creating a auth/user with the expected details(mobile and password)', async () => {
-    //   const response = await request(httpServer).post('/auth/sign-up').send({
-    //     mobile: signUpStub.mobile,
-    //     password: signUpStub.password,
-    //   });
-    //   console.log('response.body.data ::: ', response.body);
-    //   tokenMobile = response.body.meta.token;
-    //   createUser = response.body.data;
-    //   expect(response.status).toBe(200);
-    //   expect(response.body).toBeInstanceOf(Object);
-    //   expect(response.body.meta).toBeInstanceOf(Object);
-    //   expect(response.body.meta).toHaveProperty('token');
-    //   expect(response.body.meta.statusCode).toBe(200);
-    //   expect(response.body.meta.success).toBe(true);
-    //   expect(response.body.data).toBeInstanceOf(Object);
-    //   expect(response.body.data).toHaveProperty('verifications');
-    //   expect(response.body.data).toHaveProperty('_id');
-    // });
-    // it('Should test creating a auth/user that already exist', async () => {
-    //   const response = await request(httpServer).post('/auth/sign-up').send({
-    //     email: signUpStub.email,
-    //     password: signUpStub.password,
-    //   });
-    //   expect(response.status).toBe(409);
-    //   expect(response.body.meta.statusCode).toBe(409);
-    //   expect(response.body).toBeInstanceOf(Object);
-    //   expect(response.body.meta.error).toBeInstanceOf(Object);
-    //   expect(response.body.meta.error.code).toBe(409);
-    //   expect(response.body.meta.error.message).toBe(
-    //     'User with credential already exist!',
-    //   );
-    // });
+    it('Should test creating a auth/user with the expected details(email and password)', async () => {
+      const response = await request(httpServer).post('/auth/sign-up').send({
+        email: signUpStub.email,
+        password: signUpStub.password,
+      });
+      tokenEmail = response.body.meta.token;
+   
+      expect(response.status).toBe(200);
+      expect(response.body).toBeInstanceOf(Object);
+      expect(response.body.meta).toBeInstanceOf(Object);
+      expect(response.body.meta).toHaveProperty('token');
+      expect(response.body.meta.statusCode).toBe(200);
+      expect(response.body.meta.success).toBe(true);
+      expect(response.body.data).toBeInstanceOf(Object);
+      expect(response.body.data).toHaveProperty('verifications');
+      expect(response.body.data).toHaveProperty('_id');
+    });
+
+    it('Should test creating a auth/user that already exist', async () => {
+      const response = await request(httpServer).post('/auth/sign-up').send({
+        email: signUpStub.email,
+        password: signUpStub.password,
+      });
+      expect(response.status).toBe(409);
+      expect(response.body.meta.statusCode).toBe(409);
+      expect(response.body).toBeInstanceOf(Object);
+      expect(response.body.meta.error).toBeInstanceOf(Object);
+      expect(response.body.meta.error.code).toBe(409);
+      expect(response.body.meta.error.message).toBe(
+        'User with credential already exist!',
+      );
+    });
   });
 });
