@@ -5,7 +5,7 @@ export class ChangePasswordDto {
   @IsString()
   @Transform((s) => String(s.value).trim())
   readonly currentPassword: string;
-  
+
   @IsString()
   @Transform((s) => String(s.value).trim())
   readonly password: string;

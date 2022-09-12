@@ -20,7 +20,7 @@ export class MediaService extends BaseService {
    */
   public async createNewObject(obj) {
     return new this.model({
-      ...obj
+      ...obj,
     }).save();
   }
 }

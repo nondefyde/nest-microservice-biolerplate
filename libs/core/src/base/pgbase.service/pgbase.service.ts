@@ -1,5 +1,11 @@
 import * as _ from 'lodash';
-import { AppException, BaseAbstract, Pagination, QueryParser, Utils } from 'finfrac/core/shared';
+import {
+  AppException,
+  BaseAbstract,
+  Pagination,
+  QueryParser,
+  Utils,
+} from 'finfrac/core/shared';
 
 export class PGBaseService extends BaseAbstract {
   public routes = {
@@ -143,7 +149,7 @@ export class PGBaseService extends BaseAbstract {
         if (queryParser.query[key]) {
           queryParser.query[key] = Utils.generateDateRange(
             queryParser.query[key],
-            'SQL'
+            'SQL',
           );
         }
       });

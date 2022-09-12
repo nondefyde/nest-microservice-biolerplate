@@ -9,7 +9,7 @@ import { User, UserSchema } from 'finfrac/core/models';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-    HttpModule
+    HttpModule,
   ],
   controllers: [JobController],
   providers: [EmailService, SmsService],

@@ -1,4 +1,14 @@
-import { Controller, HttpCode, HttpStatus, Next, Post, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Next,
+  Post,
+  Req,
+  Res,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MediaService } from '../service/media.service';
 import { QueryParser } from 'finfrac/core/shared';
@@ -55,7 +65,7 @@ export class MediaController extends BaseController {
         queryParser,
         value,
         code: HttpStatus.CREATED,
-        message: 'file created'
+        message: 'file created',
       });
       return res.status(HttpStatus.OK).json(response);
     } catch (e) {

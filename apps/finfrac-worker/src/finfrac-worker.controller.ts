@@ -5,7 +5,7 @@ import {
   HealthCheckService,
   HealthIndicatorResult,
   MicroserviceHealthIndicator,
-  MongooseHealthIndicator
+  MongooseHealthIndicator,
 } from '@nestjs/terminus';
 import { ConfigService } from '@nestjs/config';
 import { InjectConnection } from '@nestjs/mongoose';
@@ -20,7 +20,7 @@ export class FinfracWorkerController {
     private readonly connection: Connection,
     private config: ConfigService,
   ) {}
-  
+
   @Get('/ping')
   @HealthCheck()
   async checkService() {
@@ -30,7 +30,7 @@ export class FinfracWorkerController {
           worker: {
             app: this.config.get('app.appName'),
             status: 'up',
-            environment: this.config.get('app.environment')
+            environment: this.config.get('app.environment'),
           },
         }),
       () =>

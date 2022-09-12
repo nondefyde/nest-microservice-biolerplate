@@ -15,7 +15,7 @@ async function bootstrap() {
   app.useGlobalFilters(new ResponseFilter());
   app.useGlobalPipes(new ValidationPipe());
   const config = app.get(ConfigService);
-  
+
   await app.listen(config.get('app.port'), () =>
     Logger.log(
       `Api Service is listening at port ${config.get('app.port')} ...`,

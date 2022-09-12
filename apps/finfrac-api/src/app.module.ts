@@ -12,14 +12,14 @@ import { ApiMiddleware } from 'finfrac/core/shared';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['_env/api/.env.local', '_env/.env'],
-      load: [configuration]
+      load: [configuration],
     }),
     CoreModule,
     TerminusModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: []
+  providers: [],
 })
 export class AppModule {
   public configure(consumer: MiddlewareConsumer): void {

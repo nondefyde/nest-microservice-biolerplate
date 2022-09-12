@@ -136,7 +136,7 @@ export class Utils {
       ? { $lte: startDate, $gte: endDate }
       : Between(startDate, endDate);
   }
-  
+
   /**
    * Generate date range based on give start and end dates
    */
@@ -145,7 +145,7 @@ export class Utils {
       const dateRange: any = JSON.parse(obj);
       if (dateRange && dateRange.startDate && dateRange.endDate) {
         const startDate = dateFns.startOfDay(
-          dateFns.parseISO(dateRange.startDate)
+          dateFns.parseISO(dateRange.startDate),
         );
         const endDate = dateFns.endOfDay(dateFns.parseISO(dateRange.endDate));
         return dbType === 'NoSQL'
@@ -154,7 +154,7 @@ export class Utils {
       }
       return this.generateSingleDateRange(
         dateRange.startDate || dateRange.endDate || new Date(),
-        dbType
+        dbType,
       );
     } catch (e) {
       return this.generateSingleDateRange(obj, dbType);

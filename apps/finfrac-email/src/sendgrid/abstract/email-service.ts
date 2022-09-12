@@ -3,9 +3,9 @@ import * as ejs from 'ejs';
 
 export abstract class EmailService {
   abstract sendEmail(options: Record<string, any>);
-  
+
   abstract validateOptions(options: Record<string, any>);
-  
+
   async getHtmlFromEmailTemplate(content, templateUrl) {
     try {
       return new Promise((resolve, reject) => {
@@ -14,7 +14,7 @@ export abstract class EmailService {
             throw err;
           }
           const html = ejs.render(file, {
-            ...content
+            ...content,
           });
           return resolve(html);
         });

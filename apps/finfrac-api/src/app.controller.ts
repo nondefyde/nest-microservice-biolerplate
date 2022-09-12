@@ -8,7 +8,7 @@ import {
   HealthIndicatorResult,
   MicroserviceHealthIndicator,
   MongooseHealthIndicator,
-  TypeOrmHealthIndicator
+  TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
 
 @Controller()
@@ -32,14 +32,14 @@ export class AppController {
           api: {
             app: this.config.get('app.appName'),
             status: 'up',
-            environment: this.config.get('app.environment')
-          }
+            environment: this.config.get('app.environment'),
+          },
         }),
       () =>
         this.mongoService.pingCheck('mongoDB', {
-          connection: this.connection
+          connection: this.connection,
         }),
-      () => this.typeOrmService.pingCheck('postgres-db')
+      () => this.typeOrmService.pingCheck('postgres-db'),
     ]);
   }
 }

@@ -1,7 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { JobService } from './job.service';
 import { ConfigService } from '@nestjs/config';
-import { BasicJob, EmailJob, IEmailName, MailOption, QueueTasks, SmsJob, SmsOption } from 'finfrac/core/shared';
+import {
+  BasicJob,
+  EmailJob,
+  IEmailName,
+  MailOption,
+  QueueTasks,
+  SmsJob,
+  SmsOption,
+} from 'finfrac/core/shared';
 
 @Injectable()
 export class WorkService {

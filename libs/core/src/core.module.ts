@@ -1,12 +1,9 @@
 import { Global, Module } from '@nestjs/common';
-import { CoreService } from './core.service';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HttpModule } from '@nestjs/axios';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as path from 'path';
-import { WORKER_PROVIDERS } from 'finfrac/core/shared';
-import { FileUploadService, JobService, WorkService } from 'finfrac/core/service';
 
 @Global()
 @Module({
@@ -57,16 +54,8 @@ import { FileUploadService, JobService, WorkService } from 'finfrac/core/service
               : false,
         };
       },
-      inject: [ConfigService]
+      inject: [ConfigService],
     }),
   ],
-  providers: [
-    ...WORKER_PROVIDERS,
-    FileUploadService,
-    WorkService,
-    JobService,
-    CoreService
-  ],
-  exports: [...WORKER_PROVIDERS, FileUploadService, WorkService, JobService]
 })
 export class CoreModule {}

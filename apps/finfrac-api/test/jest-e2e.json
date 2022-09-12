@@ -1,9 +1,18 @@
 {
+  "bail": true,
+  "testTimeout": 200000,
   "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": ".",
+  "rootDir": "../../../",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
-  }
+  },
+  "moduleNameMapper": {
+    "^@config": "<rootDir>/config",
+    "^@config/(.*)": "<rootDir>/config/$1",
+    "finfrac/core": "<rootDir>/libs/core/src",
+    "finfrac/core/(.*)": "<rootDir>/libs/core/src/$i"
+  },
+  "roots": ["<rootDir>/"]
 }
