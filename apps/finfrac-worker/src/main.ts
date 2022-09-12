@@ -1,14 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import * as morgan from 'morgan';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { ResponseFilter, WorkerExceptionFilter, WorkerQueue } from 'finfrac/core/shared';
+import {
+  ResponseFilter,
+  WorkerExceptionFilter,
+  WorkerQueue,
+} from 'finfrac/core/shared';
 import { Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { FinfracWorkerModule } from './finfrac-worker.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(FinfracWorkerModule, {
-    cors: true
+    cors: true,
   });
   const config = app.get(ConfigService);
 
@@ -17,7 +21,7 @@ async function bootstrap() {
   app.useGlobalFilters(new WorkerExceptionFilter());
   app.useGlobalFilters(new ResponseFilter());
   app.useGlobalPipes(new ValidationPipe());
-  
+
   Logger.log(
     `Rabbit server connected at >>>>><<<< : ${config.get('app.rabbitMQ')}`,
   );
@@ -30,12 +34,12 @@ async function bootstrap() {
       noAck: true,
     },
   });
-  
+
   console.log('port >>>>>>>>> : ', config.get('worker.port'));
   await app.listen(config.get(`worker.port`), () =>
     Logger.log(
-      `WorkerService is listening... port ${config.get('worker.port')}`
-    )
+      `WorkerService is listening... port ${config.get('worker.port')}`,
+    ),
   );
   await app.startAllMicroservices();
 }

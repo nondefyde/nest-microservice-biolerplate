@@ -16,7 +16,7 @@ import {
   SignUpDto,
   Utils,
   VerifyEmailDto,
-  VerifyMobileDto
+  VerifyMobileDto,
 } from 'finfrac/core/shared';
 import { Auth, AuthDocument, User, UserDocument } from 'finfrac/core/models';
 import { WorkService } from 'finfrac/core/service';
@@ -45,19 +45,19 @@ export class AuthService extends BaseService {
        * Throws error if bvn already exist
        */
       const { email, password } = signUpDto;
-  
+
       let auth = await this.model.findOne({ email });
       if (auth) {
         throw AppException.CONFLICT(lang.get('auth').userExist);
       }
-  
+
       const hashedPassword = await bcrypt.hash(password, 10);
       const expiration = Utils.addHourToDate(1);
       const code = this.getCode();
-  
+
       const filter: any = { email: email };
       const verificationCode: any = {
-        'verificationCodes.email': { code, expiration }
+        'verificationCodes.email': { code, expiration },
       };
       session = await this.model.startSession();
       await session.startTransaction();
@@ -65,7 +65,7 @@ export class AuthService extends BaseService {
         filter,
         {
           $setOnInsert: {
-            publicId: Utils.generateUniqueId('auth')
+            publicId: Utils.generateUniqueId('auth'),
           },
           password: hashedPassword,
           $set: verificationCode,
@@ -165,7 +165,7 @@ export class AuthService extends BaseService {
       console.log('code ::: ', code);
       auth.verificationCodes = {
         ...auth.verificationCodes,
-        [type]: { code, expiration }
+        [type]: { code, expiration },
       };
       return auth.save();
     } catch (error) {

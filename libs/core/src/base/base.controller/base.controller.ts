@@ -1,5 +1,18 @@
 import { ConfigService } from '@nestjs/config';
-import { Body, Delete, Get, HttpCode, HttpStatus, Next, Param, Patch, Post, Put, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Next,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Req,
+  Res,
+} from '@nestjs/common';
 import * as _ from 'lodash';
 import { NextFunction } from 'express';
 import { AppException, Pagination, QueryParser } from 'finfrac/core/shared';
@@ -41,7 +54,7 @@ export class BaseController {
       next(err);
     }
   }
-  
+
   @Post('/')
   @HttpCode(HttpStatus.OK)
   public async create(
@@ -160,7 +173,7 @@ export class BaseController {
       next(err);
     }
   }
-  
+
   @Patch('/:id')
   @HttpCode(HttpStatus.OK)
   public async patch(
@@ -206,7 +219,7 @@ export class BaseController {
       return next(err);
     }
   }
-  
+
   @Put('/:id')
   @HttpCode(HttpStatus.OK)
   public async update(
@@ -251,7 +264,7 @@ export class BaseController {
       next(err);
     }
   }
-  
+
   @Delete('/:id')
   @HttpCode(HttpStatus.OK)
   public async remove(

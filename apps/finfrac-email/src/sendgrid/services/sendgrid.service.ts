@@ -7,7 +7,7 @@ import { EmailService } from '../abstract/email-service';
 @Injectable()
 export class SendgridService extends EmailService {
   readonly apiKey: string;
-  
+
   constructor(option: EmailConfigOption) {
     super();
     this.apiKey = option.apiKey;

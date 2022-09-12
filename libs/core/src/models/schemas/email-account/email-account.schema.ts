@@ -22,7 +22,7 @@ export class EmailAccount {
   @Prop({
     type: String,
     required: true,
-    enum: ['sendgrid', 'mailgun']
+    enum: ['sendgrid', 'mailgun'],
   })
   service: string;
 

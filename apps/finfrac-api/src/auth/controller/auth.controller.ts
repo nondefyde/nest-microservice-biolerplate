@@ -1,4 +1,13 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthService } from '../service/auth.service';
 import { AuthSMS } from '../auth.sms';
@@ -12,7 +21,7 @@ import {
   SignInDto,
   SignUpDto,
   VerifyEmailDto,
-  VerifyMobileDto
+  VerifyMobileDto,
 } from 'finfrac/core/shared/dto';
 import { CurrentUser, QueryParser, ResponseOption } from 'finfrac/core/shared';
 import { JwtAuthGuard, LocalAuthGuard } from '../guards';
@@ -33,9 +42,9 @@ export class AuthController {
       {
         from: this.config.get('app.fromEmail'),
         template: this.config.get('app.templates.email.verify'),
-        verificationCodes: auth.verificationCodes?.email?.code
+        verificationCodes: auth.verificationCodes?.email?.code,
       },
-      auth
+      auth,
     );
     const response = await this.service.getResponse(<ResponseOption>{
       email,
@@ -43,8 +52,8 @@ export class AuthController {
       queryParser,
       code: HttpStatus.OK,
       value: {
-        ..._.pick(auth, ['verifications', 'bvn', '_id'])
-      }
+        ..._.pick(auth, ['verifications', 'bvn', '_id']),
+      },
     });
     return res.status(HttpStatus.OK).json(response);
   }
@@ -59,12 +68,11 @@ export class AuthController {
       token: accessToken,
       queryParser,
       code: HttpStatus.OK,
-      value: auth
+      value: auth,
     });
     return res.status(HttpStatus.OK).json(response);
   }
-  
-  
+
   @UseGuards(JwtAuthGuard)
   @Post('/verify-mobile')
   @HttpCode(HttpStatus.OK)
@@ -72,7 +80,7 @@ export class AuthController {
     @CurrentUser() authUser: any,
     @Body() verifyMobileDto: VerifyMobileDto,
     @Req() req,
-    @Res() res
+    @Res() res,
   ) {
     const queryParser = new QueryParser(Object.assign({}, req.query));
     const auth = await this.service.verifyMobile(authUser, verifyMobileDto);
@@ -80,13 +88,12 @@ export class AuthController {
       queryParser,
       code: HttpStatus.OK,
       value: {
-        ..._.pick(auth, ['verifications', 'bvn', '_id'])
-      }
+        ..._.pick(auth, ['verifications', 'bvn', '_id']),
+      },
     });
     return res.status(HttpStatus.OK).json(response);
   }
-  
-  
+
   @UseGuards(JwtAuthGuard)
   @Post('/send-verification')
   @HttpCode(HttpStatus.OK)
@@ -94,7 +101,7 @@ export class AuthController {
     @CurrentUser() authUser: any,
     @Body() sendVerificationDto: SendVerificationDto,
     @Req() req,
-    @Res() res
+    @Res() res,
   ) {
     const auth = await this.service.sendVerification(
       authUser,
@@ -161,9 +168,9 @@ export class AuthController {
         type: 'password reset',
         subject: 'Reset password verification',
         template: this.config.get('app.templates.email.verify'),
-        verificationCodes: auth.verificationCodes?.resetPassword?.code
+        verificationCodes: auth.verificationCodes?.resetPassword?.code,
       },
-      auth
+      auth,
     );
     const response = await this.service.getResponse({
       code: HttpStatus.OK,

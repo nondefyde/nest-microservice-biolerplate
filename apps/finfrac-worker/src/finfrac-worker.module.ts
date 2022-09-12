@@ -12,12 +12,12 @@ import { JobModule } from './job/job.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['_env/worker/.env.local', '_env/.env'],
-      load: [configuration]
+      load: [configuration],
     }),
     TerminusModule,
     CoreModule,
     MediaModule,
-    JobModule
+    JobModule,
   ],
   controllers: [FinfracWorkerController],
   providers: [],
