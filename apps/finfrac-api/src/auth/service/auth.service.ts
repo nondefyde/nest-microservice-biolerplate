@@ -8,19 +8,22 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import {
   AppException,
+  Auth,
+  AuthDocument,
+  BaseService,
   ChangePasswordDto,
   PasswordResetDto,
   ResetCodeDto,
   ResponseOption,
   SendVerificationDto,
   SignUpDto,
+  User,
+  UserDocument,
   Utils,
   VerifyEmailDto,
   VerifyMobileDto,
-} from 'finfrac/core/shared';
-import { Auth, AuthDocument, User, UserDocument } from 'finfrac/core/models';
-import { WorkService } from 'finfrac/core/service';
-import { BaseService } from 'finfrac/core/base';
+  WorkService
+} from 'finfrac/core';
 
 @Injectable()
 export class AuthService extends BaseService {

@@ -8,13 +8,15 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt-auth.strategy';
 import { ConfigService } from '@nestjs/config';
 import { Auth, AuthSchema, User, UserSchema } from 'finfrac/core/models';
+import { WorkerModule } from 'finfrac/core/worker';
 
 @Global()
 @Module({
   imports: [
+    WorkerModule,
     MongooseModule.forFeature([
       { name: Auth.name, schema: AuthSchema },
-      { name: User.name, schema: UserSchema },
+      { name: User.name, schema: UserSchema }
     ]),
     PassportModule,
     JwtModule.registerAsync({

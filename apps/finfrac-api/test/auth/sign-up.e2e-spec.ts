@@ -23,7 +23,10 @@ describe('Sign Up (e2e)', () => {
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AuthModule, TestCoreModule],
+      imports: [
+        TestCoreModule,
+        AuthModule
+      ]
     }).compile();
 
     app = moduleFixture.createNestApplication();
