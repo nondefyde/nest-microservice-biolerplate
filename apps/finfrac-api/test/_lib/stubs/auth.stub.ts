@@ -33,19 +33,19 @@ export const signInStub = {
   password: 'password',
 };
 
-// export const verifyMobileStub = {
-//   mobile: {
-//     phoneNumber: '2348075889776',
-//     isoCode: 'NG',
-//   },
-//   password: 'abcd1234',
-//   verificationCode: '1234',
-// };
+export const verifyMobileStub = {
+  mobile: {
+    phoneNumber: '2348075889776',
+    isoCode: 'NG',
+  },
+  password: 'abcd1234',
+  verificationCode: '1234',
+};
 
-// export const verifyEmailStub = {
-//   email: 'test@gmail.com',
-//   password: 'abcd1234',
-//   verificationCode: '1234',
-// };
+export const verifyEmailStub = {
+  email: 'test@gmail.com',
+  password: 'abcd1234',
+  verificationCode: '1234',
+};
 
 // export const bvn = '12345067891';
