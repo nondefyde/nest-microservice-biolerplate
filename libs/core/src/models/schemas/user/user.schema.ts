@@ -1,4 +1,4 @@
-import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 export type UserDocument = User & Document;
@@ -38,11 +38,6 @@ export class User {
   @Prop({
     type: String,
   })
-  middleName: string;
-
-  @Prop({
-    type: String,
-  })
   dob: string;
 
   @Prop({
@@ -69,23 +64,6 @@ export class User {
   gender: string;
 
   @Prop({
-    type: Array,
-  })
-  deviceIds: string[];
-
-  @Prop(
-    raw({
-      addressLine_1: String,
-      addressLine_2: String,
-      city: String,
-      state: String,
-      postalCode: String,
-      country: String,
-    }),
-  )
-  address: any;
-
-  @Prop({
     type: Boolean,
     default: false,
     select: false,
@@ -103,12 +81,9 @@ UserSchema.statics.config = () => {
     updateFillables: [
       'firstName',
       'lastName',
-      'middleName',
       'gender',
       'avatar',
-      'dob',
-      'address',
-      'deviceIds'
+      'dob'
     ],
     hiddenFields: ['deleted'],
   };
