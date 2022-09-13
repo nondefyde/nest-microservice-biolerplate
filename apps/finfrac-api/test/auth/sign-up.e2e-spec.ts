@@ -74,7 +74,7 @@ describe('Sign Up (e2e)', () => {
         password: signUpStub.password,
       });
       tokenEmail = response.body.meta.token;
-   
+
       expect(response.status).toBe(200);
       expect(response.body).toBeInstanceOf(Object);
       expect(response.body.meta).toBeInstanceOf(Object);
