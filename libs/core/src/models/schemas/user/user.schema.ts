@@ -1,5 +1,5 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document } from 'mongoose';
 
 export type UserDocument = User & Document;
 
@@ -69,16 +69,6 @@ export class User {
   gender: string;
 
   @Prop({
-    type: String,
-  })
-  bvn: string;
-
-  @Prop({
-    type: Object,
-  })
-  bvnBasic: any;
-
-  @Prop({
     type: Array,
   })
   deviceIds: string[];
@@ -96,17 +86,6 @@ export class User {
   address: any;
 
   @Prop({
-    type: Types.ObjectId,
-    ref: 'Account',
-  })
-  account: string;
-
-  @Prop({
-    type: Object,
-  })
-  wallet: any;
-
-  @Prop({
     type: Boolean,
     default: false,
     select: false,
@@ -119,7 +98,7 @@ const UserSchema = SchemaFactory.createForClass(User);
 UserSchema.statics.config = () => {
   return {
     idToken: 'user',
-    uniques: ['email', 'mobile', 'bvn'],
+    uniques: ['email'],
     fillables: [],
     updateFillables: [
       'firstName',
@@ -129,7 +108,7 @@ UserSchema.statics.config = () => {
       'avatar',
       'dob',
       'address',
-      'deviceIds',
+      'deviceIds'
     ],
     hiddenFields: ['deleted'],
   };
@@ -139,16 +118,6 @@ UserSchema.virtual('auth', {
   ref: 'Auth',
   localField: '_id',
   foreignField: '_id',
-  justOne: true,
-  match: {
-    deleted: false,
-  },
-});
-
-UserSchema.virtual('customer', {
-  ref: 'Customer',
-  localField: '_id',
-  foreignField: 'user',
   justOne: true,
   match: {
     deleted: false,

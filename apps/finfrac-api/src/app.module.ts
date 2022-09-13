@@ -6,17 +6,19 @@ import { ConfigModule } from '@nestjs/config';
 import { configuration } from '@config';
 import { CoreModule } from 'finfrac/core';
 import { ApiMiddleware } from 'finfrac/core/shared';
+import { UserModule } from './user';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['_env/api/.env.local', '_env/.env'],
-      load: [configuration],
+      load: [configuration]
     }),
     CoreModule,
     TerminusModule,
     AuthModule,
+    UserModule
   ],
   controllers: [AppController],
   providers: [],
